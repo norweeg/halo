@@ -15,22 +15,6 @@ from termcolor import colored
 init(autoreset=True)
 
 
-def is_supported():
-    """Check whether operating system supports main symbols or not.
-
-    Returns
-    -------
-    boolean
-        Whether operating system supports main symbols or not
-    """
-
-    os_arch = platform.system()
-
-    if os_arch != 'Windows':
-        return True
-
-    return False
-
 
 def get_environment():
     """Get the environment in which halo is running

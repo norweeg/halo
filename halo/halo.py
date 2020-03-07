@@ -333,13 +333,10 @@ class Halo(object):
         if spinner and type(spinner) == dict:
             return spinner
 
-        if is_supported():
-            if all([is_text_type(spinner), spinner in Spinners.__members__]):
-                return Spinners[spinner].value
-            else:
-                return default_spinner
+        if all([is_text_type(spinner), spinner in Spinners.__members__]):
+            return Spinners[spinner].value
         else:
-            return Spinners["line"].value
+            return default_spinner
 
     def _get_text(self, text):
         """Creates frames based on the selected animation
