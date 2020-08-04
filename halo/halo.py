@@ -20,7 +20,6 @@ from halo._utils import (
     decode_utf_8_text,
     get_environment,
     get_terminal_columns,
-    is_supported,
     is_text_type,
     encode_utf_8_text,
 )

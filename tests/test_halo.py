@@ -16,7 +16,7 @@ except ImportError:
 from spinners.spinners import Spinners
 
 from halo import Halo
-from halo._utils import get_terminal_columns, is_supported
+from halo._utils import get_terminal_columns
 from tests._utils import strip_ansi, find_colors, encode_utf_8_text, decode_utf_8_text
 
 from termcolor import COLORS
@@ -26,12 +26,8 @@ if sys.version_info.major == 2:
 else:
     get_coded_text = decode_utf_8_text
 
-if is_supported():
-    frames = [get_coded_text(frame) for frame in Spinners['dots'].value['frames']]
-    default_spinner = Spinners['dots'].value
-else:
-    frames = [get_coded_text(frame) for frame in Spinners['line'].value['frames']]
-    default_spinner = Spinners['line'].value
+frames = [get_coded_text(frame) for frame in Spinners['dots'].value['frames']]
+default_spinner = Spinners['dots'].value
 
 
 class SpecificException(Exception):
@@ -127,10 +123,7 @@ class TestHalo(unittest.TestCase):
 
     def test_spinner_getter(self):
         instance = Halo()
-        if is_supported():
-            default_spinner_value = "dots"
-        else:
-            default_spinner_value = "line"
+        default_spinner_value = "dots"
 
         instance.spinner = default_spinner_value
         self.assertEqual(default_spinner, instance.spinner)
@@ -368,16 +361,10 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(spinner.text_color, 'red')
         self.assertEqual(spinner.color, 'red')
 
-        if is_supported():
-            self.assertEqual(spinner.spinner, Spinners['dots12'].value)
-        else:
-            self.assertEqual(spinner.spinner, default_spinner)
+        self.assertEqual(spinner.spinner, Spinners['dots12'].value)
 
         spinner.spinner = 'dots11'
-        if is_supported():
-            self.assertEqual(spinner.spinner, Spinners['dots11'].value)
-        else:
-            self.assertEqual(spinner.spinner, default_spinner)
+        self.assertEqual(spinner.spinner, Spinners['dots11'].value)
 
         spinner.spinner = 'foo_bar'
         self.assertEqual(spinner.spinner, default_spinner)

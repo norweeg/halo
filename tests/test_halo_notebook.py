@@ -10,7 +10,7 @@ import unittest
 from spinners.spinners import Spinners
 
 from halo import HaloNotebook
-from halo._utils import get_terminal_columns, is_supported
+from halo._utils import get_terminal_columns
 from tests._utils import decode_utf_8_text, encode_utf_8_text, find_colors, strip_ansi
 
 from termcolor import COLORS
@@ -21,12 +21,8 @@ else:
     get_coded_text = decode_utf_8_text
 
 
-if is_supported():
-    frames = [get_coded_text(frame) for frame in Spinners['dots'].value['frames']]
-    default_spinner = Spinners['dots'].value
-else:
-    frames = [get_coded_text(frame) for frame in Spinners['line'].value['frames']]
-    default_spinner = Spinners['line'].value
+frames = [get_coded_text(frame) for frame in Spinners['dots'].value['frames']]
+default_spinner = Spinners['dots'].value
 
 
 class TestHaloNotebook(unittest.TestCase):
@@ -327,16 +323,10 @@ class TestHaloNotebook(unittest.TestCase):
         self.assertEqual(spinner.text, 'bar')
         self.assertEqual(spinner.color, 'red')
 
-        if is_supported():
-            self.assertEqual(spinner.spinner, Spinners['dots12'].value)
-        else:
-            self.assertEqual(spinner.spinner, default_spinner)
+        self.assertEqual(spinner.spinner, Spinners['dots12'].value)
 
         spinner.spinner = 'dots11'
-        if is_supported():
-            self.assertEqual(spinner.spinner, Spinners['dots11'].value)
-        else:
-            self.assertEqual(spinner.spinner, default_spinner)
+        self.assertEqual(spinner.spinner, Spinners['dots11'].value)
 
         spinner.spinner = 'foo_bar'
         self.assertEqual(spinner.spinner, default_spinner)
